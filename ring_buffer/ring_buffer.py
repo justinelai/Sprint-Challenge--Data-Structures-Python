@@ -27,7 +27,7 @@ class RingBuffer:
         # Note:  This is the only [] allowed
         list_buffer_contents = []
 
-        # returns all of the elements in the buffer in a list in their given order (OLDEST VALUE FIRST? if so, not necessarily head or tail)
+        # returns all of the elements in the buffer in a list in their given order
         # do not return None values in the list even if they are present:
         nextlist = self.storage.head
         while nextlist is not None:
