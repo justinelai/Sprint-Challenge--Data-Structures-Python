@@ -11,15 +11,17 @@ class RingBuffer:
         # adds elements to the buffer - no APPEND method. reassignment? FIFO
         # oldest element in the ring buffer is overwritten with the newest element
         # instead, oldest element is head
-        self.current = self.storage.head
+        
+        if self.current is None:
+            self.current = self.storage.head #initialize current at head.
         if self.storage.length == self.capacity: #if DLL is full
-            self.storage.remove_from_head()
-            self.storage.add_to_head(item)
-            self.current = self.current.next
-            # self.current += 1 % self.capacity # current must increase, but should be able to loop back to zero if it reaches capacity. Modulo.
+            self.current.value = item
+            if self.current.next is not None:
+                self.current = self.current.next
+            else:
+                self.current = self.storage.head
         else:
             self.storage.add_to_tail(item)
-
 
     def get(self):
         # Note:  This is the only [] allowed
@@ -27,9 +29,10 @@ class RingBuffer:
 
         # returns all of the elements in the buffer in a list in their given order (OLDEST VALUE FIRST? if so, not necessarily head or tail)
         # do not return None values in the list even if they are present:
-        while self.current is not None:
-            list_buffer_contents.append(self.current.value)
-            self.current = self.current.next
+        nextlist = self.storage.head
+        while nextlist is not None:
+            list_buffer_contents.append(nextlist.value)
+            nextlist = nextlist.next
         
         return list_buffer_contents
 
