@@ -15,6 +15,7 @@ class RingBuffer:
         if self.storage.length == self.capacity: #if DLL is full
             self.storage.remove_from_head()
             self.storage.add_to_head(item)
+            self.current = self.current.next
             # self.current += 1 % self.capacity # current must increase, but should be able to loop back to zero if it reaches capacity. Modulo.
         else:
             self.storage.add_to_tail(item)
