@@ -4,19 +4,20 @@ from doubly_linked_list import DoublyLinkedList
 class RingBuffer:
     def __init__(self, capacity):
         self.capacity = capacity # integer, fixed
-        self.current = None # Index of oldest element... location where "current"/new element will be placed?
+        self.current = None # Quasi index of oldest element... location where "current"/new element will be placed? but only for a linked list.
         self.storage = DoublyLinkedList()
 
     def append(self, item):
-        # adds elements to the buffer - no APPEND method. reassignment?
+        # adds elements to the buffer - no APPEND method. reassignment? FIFO
         # oldest element in the ring buffer is overwritten with the newest element
-        
-        self.current = 0 #initialize empty DLL.
-        
+        # instead, oldest element is head
+        self.current = self.storage.head
         if self.storage.length == self.capacity: #if DLL is full
-            pass
-        self.storage.add_to_tail(item)
-        self.current += 1 # current must increase, but should be able to loop back to zero if it reaches capacity.
+            self.storage.remove_from_head()
+            self.storage.add_to_head(item)
+            # self.current += 1 % self.capacity # current must increase, but should be able to loop back to zero if it reaches capacity. Modulo.
+        else:
+            self.storage.add_to_tail(item)
 
 
     def get(self):
@@ -24,10 +25,11 @@ class RingBuffer:
         list_buffer_contents = []
 
         # returns all of the elements in the buffer in a list in their given order (OLDEST VALUE FIRST? if so, not necessarily head or tail)
-        # do not return None values in the list even if they are present
-        for entry in range(self.storage.length):
-           list_buffer_contents.append(entry)
-
+        # do not return None values in the list even if they are present:
+        while self.current is not None:
+            list_buffer_contents.append(self.current.value)
+            self.current = self.current.next
+        
         return list_buffer_contents
 
 # ----------------Stretch Goal-------------------
