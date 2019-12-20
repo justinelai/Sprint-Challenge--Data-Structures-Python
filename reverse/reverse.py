@@ -51,4 +51,25 @@ class LinkedList:
       prev = current
       current = tempnext
     self.head = prev
+"""
+# tempnext remembers the next value in the original list
+# current is always switching values
+# prev points to the head of the list we're making
 
+
+7 14 21 28
+
+prev none   current 7
+  tempnext = 14
+  next_node = none
+  prev = 7
+  current = 14
+
+  tempnext = store 14's next_node as 21
+  next_node = reassign current(14)'s next to 7
+  prev = 14
+  current = 21
+
+
+
+"""
